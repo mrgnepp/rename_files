@@ -35,24 +35,24 @@ def rename_files():
     print('Files to be renamed (%s):' % len(target_files))
     padding = len(max(target_files, key=len))
 
+    replacement_string = args.replace
     for file in target_files:
         if not args.regex:
             if args.append:
-                altered = file.replace(args.pattern, args.pattern + args.replace)
+                replacement_string = args.pattern + args.replace
             elif args.prepend:
-                altered = file.replace(args.pattern, args.replace + args.pattern)
-            else:
-                altered = file.replace(args.pattern, args.replace)
+                replacement_string = args.replace + args.pattern
+
+            altered = file.replace(args.pattern, replacement_string)
         else:
             altered = file
-            index = 0
             for matched_pattern in target_files[file]:
                 if args.append:
-                    altered = altered.replace(matched_pattern, matched_pattern + args.replace)
+                    replacement_string = matched_pattern + args.replace
                 elif args.prepend:
-                    altered = altered.replace(matched_pattern, args.replace + matched_pattern)
-                else:
-                    altered = altered.replace(matched_pattern, args.replace)
+                    replacement_string = args.replace + matched_pattern
+
+                altered = file.replace(matched_pattern, replacement_string)
 
         print('%s --> %s' % (file.ljust(padding), altered))
         if not args.view:
@@ -67,9 +67,9 @@ def parse_args():
     parser.add_argument('replace', help='string to replace the pattern with')
 
     # Optional Args
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-a', '--append', action='store_true', help='the "replace" string will be appended to the pattern')
-    group.add_argument('-p', '--prepend', action='store_true', help='the "replace" string will be prepended to the pattern')
+    string_location = parser.add_mutually_exclusive_group()
+    string_location.add_argument('-a', '--append', action='store_true', help='the "replace" string will be appended to the pattern')
+    string_location.add_argument('-p', '--prepend', action='store_true', help='the "replace" string will be prepended to the pattern')
     parser.add_argument('-r', '--regex', action='store_true', help='the pattern is a regex')
     parser.add_argument('-v', '--view', action='store_true', help='only view the potential changes, does not rename files')
 
