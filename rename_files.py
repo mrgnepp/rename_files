@@ -2,7 +2,7 @@ import argparse
 import os
 import re
 
-def main():
+def rename_files():
     args = parse_args()
 
     if not os.path.isdir(args.folder):
@@ -76,4 +76,4 @@ def parse_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
-    main()
+    rename_files()
