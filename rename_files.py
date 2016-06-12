@@ -35,6 +35,7 @@ def rename_files():
     print('Files to be renamed (%s):' % len(target_files))
     padding = len(max(target_files, key=len))
 
+    dest_files = []
     replacement_string = args.replace
     for file in target_files:
         if not args.regex:
@@ -45,7 +46,6 @@ def rename_files():
 
             altered = file.replace(args.pattern, replacement_string)
         else:
-            altered = file
             for matched_pattern in target_files[file]:
                 if args.append:
                     replacement_string = matched_pattern + args.replace
@@ -54,9 +54,14 @@ def rename_files():
 
                 altered = file.replace(matched_pattern, replacement_string)
 
-        print('%s --> %s' % (file.ljust(padding), altered))
+        dest_files.append('%s --> %s' % (file.ljust(padding), altered))
         if not args.view:
             os.rename(file, altered)
+
+    # Dictionaries aren't sorted
+    dest_files.sort()
+    for file in dest_files:
+        print(file)
 
 def parse_args():
     parser = argparse.ArgumentParser()
