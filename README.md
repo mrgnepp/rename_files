@@ -30,7 +30,7 @@ python rename_files.py "C:/folder with files to rename" "text" "new_text"
 
 ```bash
 # In a folder with: ["text1.txt", "text 2.txt", "TEXT3 3.txt"]
-python rename_files.py "C:/folder with files to rename" "text" "new_text" --preprend
+python rename_files.py "C:/folder with files to rename" "text" "new_text" --prepend
 # Results in: ["new_texttext1.txt", "new_texttext 2.txt", "TEXT3 3.txt"]
 ```
 
